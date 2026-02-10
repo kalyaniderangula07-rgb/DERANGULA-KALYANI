@@ -1,0 +1,9 @@
+{
+  "name": "VitaMind - Because You Matter",
+  "description": "A comprehensive healthcare platform offering AI-driven symptom triage, DIY remedies, health tracking, and stress support.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}
