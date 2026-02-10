@@ -1,13 +1,12 @@
 
 import React from 'react';
-import { UserRole, User } from '../types';
+import { UserRole, User } from '../types.ts';
 
 interface HeaderProps {
   currentUser: User;
   userRole: UserRole;
   setUserRole: (role: UserRole) => void;
   activeTab: string;
-  // Added missing props to fix 'IntrinsicAttributes & HeaderProps' assignment error in App.tsx
   onOpenNotifications: () => void;
   unreadCount: number;
 }
@@ -34,7 +33,6 @@ const Header: React.FC<HeaderProps> = ({
       </div>
 
       <div className="flex items-center space-x-4">
-        {/* Added Notification Button to handle onOpenNotifications and unreadCount props */}
         <button 
           onClick={onOpenNotifications}
           className="relative w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center hover:bg-slate-200 transition-all group"
@@ -59,7 +57,7 @@ const Header: React.FC<HeaderProps> = ({
         </select>
         
         <div className="h-10 w-10 rounded-xl bg-pink-100 flex items-center justify-center border-2 border-white shadow-md ring-1 ring-slate-200 overflow-hidden">
-           <img src={currentUser.avatar || `https://picsum.sh/seed/${currentUser.email}/100/100`} alt={currentUser.name} className="w-full h-full object-cover" />
+           <img src={currentUser.avatar || `https://picsum.photos/seed/${currentUser.email}/100/100`} alt={currentUser.name} className="w-full h-full object-cover" />
         </div>
       </div>
     </header>

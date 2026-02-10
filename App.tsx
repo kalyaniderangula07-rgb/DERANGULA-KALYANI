@@ -1,20 +1,21 @@
+
 import React, { useState, useEffect } from 'react';
-import { UserRole, Medication, User, Notification, NotificationType } from './types';
-import Sidebar from './components/Sidebar';
-import Header from './components/Header';
-import Dashboard from './components/Dashboard';
-import DoctorDashboard from './components/DoctorDashboard';
-import SymptomTriage from './components/SymptomTriage';
-import ImageCheck from './components/ImageCheck';
-import PrescriptionReader from './components/PrescriptionReader';
-import DoctorDiscovery from './components/DoctorDiscovery';
-import HealthTracker from './components/HealthTracker';
-import StressSupport from './components/StressSupport';
-import Profile from './components/Profile';
-import Auth from './components/Auth';
-import MedicineTracker from './components/MedicineTracker';
-import SkinCheck from './components/GlowTracker';
-import NotificationCenter from './components/NotificationCenter';
+import { UserRole, Medication, User, Notification, NotificationType } from './types.ts';
+import Sidebar from './components/Sidebar.tsx';
+import Header from './components/Header.tsx';
+import Dashboard from './components/Dashboard.tsx';
+import DoctorDashboard from './components/DoctorDashboard.tsx';
+import SymptomTriage from './components/SymptomTriage.tsx';
+import ImageCheck from './components/ImageCheck.tsx';
+import PrescriptionReader from './components/PrescriptionReader.tsx';
+import DoctorDiscovery from './components/DoctorDiscovery.tsx';
+import HealthTracker from './components/HealthTracker.tsx';
+import StressSupport from './components/StressSupport.tsx';
+import Profile from './components/Profile.tsx';
+import Auth from './components/Auth.tsx';
+import MedicineTracker from './components/MedicineTracker.tsx';
+import SkinCheck from './components/GlowTracker.tsx';
+import NotificationCenter from './components/NotificationCenter.tsx';
 
 const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(() => {

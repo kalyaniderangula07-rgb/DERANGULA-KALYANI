@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { UserRole } from '../types';
+import { UserRole } from '../types.ts';
 
 interface SidebarProps {
   activeTab: string;
@@ -15,7 +16,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, role = UserR
     { id: 'medicine-tracker', label: 'Medicine Cabinet', icon: '💊' },
     { id: 'glow-tracker', label: 'Skin Check', icon: '✨' },
     { id: 'triage', label: 'Symptom Triage', icon: '🔍' },
-    { id: 'image-check', label: 'Care & Remedies', icon: '🩹' },
+    { id: 'image-check', label: 'DIY Remedies', icon: '📸' },
     { id: 'doctors', label: 'Find Doctor', icon: '👨‍⚕️' },
     { id: 'tracker', label: 'Health Tracker', icon: '📈' },
     { id: 'stress', label: 'Stress Relief', icon: '🧘' },
@@ -37,12 +38,11 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, role = UserR
 
   return (
     <>
-      {/* Desktop Sidebar */}
       <aside className="hidden md:flex flex-col w-64 bg-white border-r border-slate-200 sticky top-0 h-screen">
         <div className="p-6">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl overflow-hidden shadow-sm flex-shrink-0">
-               <img src="logo.png" alt="VitaMind" className="w-full h-full object-cover scale-150" />
+            <div className="w-12 h-12 rounded-xl bg-pink-50 flex items-center justify-center shadow-sm flex-shrink-0">
+               <span className="text-xl font-black text-pink-500">VM</span>
             </div>
             <div className="flex flex-col min-w-0">
               <h1 className="text-xl font-black text-slate-800 tracking-tighter leading-none truncate">VitaMind</h1>
@@ -77,7 +77,6 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, role = UserR
         </div>
       </aside>
 
-      {/* Mobile Bottom Nav */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-2 py-1 flex justify-around items-center z-50">
         {navItems.slice(0, 5).map((item) => (
           <button

@@ -159,28 +159,11 @@ export const performImageCheck = async (base64Image: string, context: string): P
       contents: {
         parts: [
           { inlineData: { mimeType: 'image/jpeg', data: base64Image } },
-          { text: `Analyze this health concern. User context: ${context}.
-          
-          STRICT RULES:
-          1. If the concern is AESTHETIC/BEAUTY (pimples, acne, dry skin, dullness): Suggest ONLY gentle home remedies using kitchen/natural ingredients. 
-          2. If the concern is a PHYSICAL WOUND (cut, scrape, burn, puncture): Provide basic FIRST AID protocols (cleaning, covering, stopping bleeding) and list clinical/first-aid items.
-          
-          Output must be JSON only.` }
+          { text: `Analyze this skin/health concern: ${context}. Suggest natural homemade remedies.` }
         ]
       },
       config: {
-        systemInstruction: `You are a First Aid and Natural Wellness Expert.
-        
-        BIFURCATION LOGIC:
-        - BEAUTY/ACNE: Guidance should focus on lifestyle and natural home-made masks or treatments.
-        - WOUNDS/INJURIES: Guidance should focus on immediate clinical hygiene and protection steps.
-        
-        Fields:
-        - doctorType: Who they should see if it gets worse.
-        - severity: Mild/Moderate/Severe.
-        - guidance: A paragraph of the primary care steps.
-        - remedyItems: 2-3 specific items or rituals.
-        - emergencyAlert: Boolean if they need an ER immediately.`,
+        systemInstruction: `Natural apothecary specialist. JSON output ONLY.`,
         responseMimeType: "application/json",
         responseSchema: {
           type: Type.OBJECT,
@@ -199,13 +182,13 @@ export const performImageCheck = async (base64Image: string, context: string): P
                   description: { type: Type.STRING },
                   instructions: { type: Type.STRING },
                   imagePrompt: { type: Type.STRING },
-                  timeOfDay: { type: Type.STRING, enum: ['Morning', 'Night', 'Immediate'] }
+                  timeOfDay: { type: Type.STRING, enum: ['Morning', 'Night'] }
                 },
                 required: ['id', 'name', 'description', 'instructions', 'imagePrompt', 'timeOfDay']
               }
             }
           },
-          required: ['doctorType', 'severity', 'guidance', 'emergencyAlert', 'remedyItems']
+          required: ['doctorType', 'severity', 'guidance', 'emergencyAlert']
         }
       }
     });
@@ -217,7 +200,7 @@ export const generateRemedyImage = async (prompt: string): Promise<string> => {
   return withRetry(async () => {
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash-image',
-      contents: { parts: [{ text: `A clean, professional photo of ${prompt} on a white surface, minimalist style.` }] }
+      contents: { parts: [{ text: `A minimalist aesthetic clean photo of natural ingredients like ${prompt}. Top down view.` }] }
     });
     for (const part of response.candidates[0].content.parts) {
       if (part.inlineData) return `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
