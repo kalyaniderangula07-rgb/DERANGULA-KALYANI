@@ -5,10 +5,10 @@ import react from '@vitejs/plugin-react';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: './', // Ensures assets work on GitHub Pages subpaths
+  base: './', // Ensures assets work on GitHub Pages subpaths and relative links
   define: {
     // This allows process.env.API_KEY to be replaced at build time
-    'process.env.API_KEY': JSON.stringify(process.env.API_KEY)
+    'process.env.API_KEY': JSON.stringify(process.env.API_KEY || "")
   },
   server: {
     port: 3000,
@@ -16,5 +16,6 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: true,
+    sourcemap: false
   }
 });

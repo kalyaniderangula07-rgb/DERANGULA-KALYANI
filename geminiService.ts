@@ -1,9 +1,16 @@
+
 import { GoogleGenAI, Type, Chat } from "@google/genai";
 import { TriageResult, Severity, PrescriptionAnalysis } from "./types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Safety check for API Key to prevent blank page crashes
+const API_KEY = process.env.API_KEY || "";
+const ai = new GoogleGenAI({ apiKey: API_KEY });
 
 async function withRetry<T>(fn: () => Promise<T>, retries = 3, delay = 1000): Promise<T> {
+  if (!API_KEY) {
+    console.error("Gemini API Key is missing. Please check your environment variables.");
+    throw new Error("API_KEY_MISSING");
+  }
   try {
     return await fn();
   } catch (error: any) {
