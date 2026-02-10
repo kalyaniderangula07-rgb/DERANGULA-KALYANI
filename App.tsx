@@ -1,99 +1,64 @@
 
 import React, { useState, useEffect } from 'react';
-import { UserRole, Medication, User, Notification, NotificationType } from './types.ts';
+import { User, UserRole, Medication, Notification, NotificationType } from './types.ts';
+
+// Component Imports
 import Sidebar from './components/Sidebar.tsx';
 import Header from './components/Header.tsx';
 import Dashboard from './components/Dashboard.tsx';
-import DoctorDashboard from './components/DoctorDashboard.tsx';
+import Auth from './components/Auth.tsx';
 import SymptomTriage from './components/SymptomTriage.tsx';
 import ImageCheck from './components/ImageCheck.tsx';
-import PrescriptionReader from './components/PrescriptionReader.tsx';
 import DoctorDiscovery from './components/DoctorDiscovery.tsx';
 import HealthTracker from './components/HealthTracker.tsx';
 import StressSupport from './components/StressSupport.tsx';
 import Profile from './components/Profile.tsx';
-import Auth from './components/Auth.tsx';
+import PrescriptionReader from './components/PrescriptionReader.tsx';
+import DoctorDashboard from './components/DoctorDashboard.tsx';
 import MedicineTracker from './components/MedicineTracker.tsx';
-import SkinCheck from './components/GlowTracker.tsx';
+import GlowTracker from './components/GlowTracker.tsx';
 import NotificationCenter from './components/NotificationCenter.tsx';
 
 const App: React.FC = () => {
-  const [currentUser, setCurrentUser] = useState<User | null>(() => {
-    const saved = localStorage.getItem('whenever_current_user');
-    return saved ? JSON.parse(saved) : null;
-  });
-  
+  const [user, setUser] = useState<User | null>(null);
+  const [userRole, setUserRole] = useState<UserRole>(UserRole.PATIENT);
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [userRole, setUserRole] = useState<UserRole>(currentUser?.role || UserRole.PATIENT);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [medications, setMedications] = useState<Medication[]>([]);
-  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([
     {
       id: '1',
-      title: 'Water Reminder',
-      message: "Time for a quick refresh! You're 2 glasses away from your goal.",
-      timestamp: '2 mins ago',
-      type: NotificationType.INFO,
-      read: false
-    },
-    {
-      id: '2',
-      title: 'Ritual Complete',
-      message: 'You performed your Rosemary Rinse. Your skin vitality increased by 5%.',
-      timestamp: '1 hour ago',
+      title: 'Welcome to VitaMind',
+      message: 'Your journey to holistic health starts here. Explore the dashboard to get started.',
+      timestamp: 'Just now',
       type: NotificationType.SUCCESS,
       read: false
-    },
-    {
-      id: '3',
-      title: 'Consultation Soon',
-      message: 'Your call with Dr. Priya Sharma starts in 15 minutes.',
-      timestamp: '3 hours ago',
-      type: NotificationType.ALERT,
-      read: true
     }
   ]);
 
+  // Sync role with user when they log in
   useEffect(() => {
-    if (currentUser) {
-      setUserRole(currentUser.role || UserRole.PATIENT);
+    if (user) {
+      setUserRole(user.role);
     }
-  }, [currentUser]);
-
-  useEffect(() => {
-    if (currentUser) {
-      const saved = localStorage.getItem(`whenever_meds_${currentUser.id}`);
-      setMedications(saved ? JSON.parse(saved) : []);
-    } else {
-      setMedications([]);
-    }
-  }, [currentUser]);
-
-  useEffect(() => {
-    if (currentUser) {
-      localStorage.setItem(`whenever_meds_${currentUser.id}`, JSON.stringify(medications));
-    }
-  }, [medications, currentUser]);
-
-  const handleLogin = (user: User) => {
-    setCurrentUser(user);
-    setUserRole(user.role);
-    localStorage.setItem('whenever_current_user', JSON.stringify(user));
-  };
+  }, [user]);
 
   const handleLogout = () => {
-    setCurrentUser(null);
-    localStorage.removeItem('whenever_current_user');
+    setUser(null);
     setActiveTab('dashboard');
   };
 
   const addMedications = (newMeds: Medication[]) => {
-    setMedications(prev => {
-      return [...prev, ...newMeds.map(m => ({ 
-        ...m, 
-        id: m.id || (Date.now() + Math.random().toString()) 
-      }))];
-    });
+    setMedications(prev => [...prev, ...newMeds]);
+    const notification: Notification = {
+      id: Date.now().toString(),
+      title: 'Medications Added',
+      message: `${newMeds.length} items added to your daily rituals.`,
+      timestamp: 'Just now',
+      type: NotificationType.MEDICINE,
+      read: false
+    };
+    setNotifications(prev => [notification, ...prev]);
   };
 
   const toggleMedication = (id: string) => {
@@ -104,59 +69,74 @@ const App: React.FC = () => {
     setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
   };
 
-  const unreadCount = notifications.filter(n => !n.read).length;
-
-  if (!currentUser) {
-    return <Auth onLogin={handleLogin} />;
+  if (!user) {
+    return <Auth onLogin={setUser} />;
   }
 
-  const renderContent = () => {
-    const isProfessional = userRole === UserRole.DOCTOR || userRole === UserRole.THERAPIST;
+  const unreadCount = notifications.filter(n => !n.read).length;
 
+  const renderContent = () => {
+    // Shared Professional Content
+    if (userRole === UserRole.DOCTOR || userRole === UserRole.THERAPIST) {
+      switch (activeTab) {
+        case 'dashboard': return <DoctorDashboard user={user} role={userRole} />;
+        case 'stress': return <StressSupport />;
+        case 'profile': return <Profile user={user} role={userRole} onLogout={handleLogout} />;
+        default: return <DoctorDashboard user={user} role={userRole} />;
+      }
+    }
+
+    // Patient Content
     switch (activeTab) {
-      case 'dashboard': 
-        return isProfessional 
-          ? <DoctorDashboard user={currentUser} role={userRole} /> 
-          : <Dashboard user={currentUser} setActiveTab={setActiveTab} />;
+      case 'dashboard':
+        return <Dashboard user={user} setActiveTab={setActiveTab} />;
       case 'medicine-tracker':
         return <MedicineTracker medications={medications} toggleMedication={toggleMedication} setActiveTab={setActiveTab} />;
       case 'glow-tracker':
-        return <SkinCheck medications={medications} toggleMedication={toggleMedication} setActiveTab={setActiveTab} />;
-      case 'triage': return <SymptomTriage onComplete={() => setActiveTab('doctors')} />;
-      case 'image-check': return <ImageCheck onComplete={() => setActiveTab('doctors')} onAddReminders={addMedications} />;
-      case 'prescriptions': return <PrescriptionReader onConfirmed={(meds) => { addMedications(meds); setActiveTab('medicine-tracker'); }} />;
-      case 'doctors': return <DoctorDiscovery />;
-      case 'tracker': return <HealthTracker />;
-      case 'stress': return <StressSupport />;
-      case 'profile': return <Profile user={currentUser} role={userRole} onLogout={handleLogout} />;
-      default: return isProfessional 
-        ? <DoctorDashboard user={currentUser} role={userRole} />
-        : <Dashboard user={currentUser} setActiveTab={setActiveTab} />;
+        return <GlowTracker medications={medications} toggleMedication={toggleMedication} setActiveTab={setActiveTab} />;
+      case 'triage':
+        return <SymptomTriage onComplete={() => setActiveTab('doctors')} />;
+      case 'image-check':
+        return <ImageCheck onComplete={() => setActiveTab('doctors')} onAddReminders={addMedications} />;
+      case 'prescriptions':
+        return <PrescriptionReader onConfirmed={(meds) => { addMedications(meds); setActiveTab('medicine-tracker'); }} />;
+      case 'doctors':
+        return <DoctorDiscovery />;
+      case 'tracker':
+        return <HealthTracker />;
+      case 'stress':
+        return <StressSupport />;
+      case 'profile':
+        return <Profile user={user} role={userRole} onLogout={handleLogout} />;
+      default:
+        return <Dashboard user={user} setActiveTab={setActiveTab} />;
     }
   };
 
   return (
     <div className="flex min-h-screen bg-white">
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} role={userRole} />
-      <div className="flex-1 flex flex-col min-w-0">
+      
+      <div className="flex-1 flex flex-col min-w-0 bg-white">
         <Header 
-          currentUser={currentUser}
+          currentUser={user} 
           userRole={userRole} 
           setUserRole={setUserRole} 
           activeTab={activeTab}
-          onOpenNotifications={() => setIsNotificationOpen(true)}
           unreadCount={unreadCount}
+          onOpenNotifications={() => setIsNotificationsOpen(true)}
         />
-        <main className="flex-1 overflow-y-auto p-4 md:p-8 selection:bg-pink-100 selection:text-pink-600 scrollbar-hide">
-          <div className="max-w-6xl mx-auto pb-20 md:pb-0">
+        
+        <main className="flex-1 p-4 md:p-8 overflow-y-auto scrollbar-hide">
+          <div className="max-w-7xl mx-auto">
             {renderContent()}
           </div>
         </main>
       </div>
 
       <NotificationCenter 
-        isOpen={isNotificationOpen} 
-        onClose={() => setIsNotificationOpen(false)}
+        isOpen={isNotificationsOpen} 
+        onClose={() => setIsNotificationsOpen(false)} 
         notifications={notifications}
         onMarkAsRead={markNotificationRead}
       />
