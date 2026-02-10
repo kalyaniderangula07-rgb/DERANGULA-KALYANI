@@ -14,7 +14,7 @@ import StressSupport from './components/StressSupport';
 import Profile from './components/Profile';
 import Auth from './components/Auth';
 import MedicineTracker from './components/MedicineTracker';
-import GlowTracker from './components/GlowTracker';
+import SkinCheck from './components/GlowTracker';
 
 const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(() => {
@@ -83,11 +83,11 @@ const App: React.FC = () => {
       case 'dashboard': 
         return isProfessional 
           ? <DoctorDashboard user={currentUser} role={userRole} /> 
-          : <Dashboard user={currentUser} setActiveTab={setActiveTab} medications={medications} toggleMedication={toggleMedication} />;
+          : <Dashboard user={currentUser} setActiveTab={setActiveTab} />;
       case 'medicine-tracker':
         return <MedicineTracker medications={medications} toggleMedication={toggleMedication} setActiveTab={setActiveTab} />;
       case 'glow-tracker':
-        return <GlowTracker medications={medications} toggleMedication={toggleMedication} setActiveTab={setActiveTab} />;
+        return <SkinCheck medications={medications} toggleMedication={toggleMedication} setActiveTab={setActiveTab} />;
       case 'triage': return <SymptomTriage onComplete={() => setActiveTab('doctors')} />;
       case 'image-check': return <ImageCheck onComplete={() => setActiveTab('doctors')} onAddReminders={addMedications} />;
       case 'prescriptions': return <PrescriptionReader onConfirmed={(meds) => { addMedications(meds); setActiveTab('medicine-tracker'); }} />;
@@ -97,7 +97,7 @@ const App: React.FC = () => {
       case 'profile': return <Profile user={currentUser} role={userRole} onLogout={handleLogout} />;
       default: return isProfessional 
         ? <DoctorDashboard user={currentUser} role={userRole} />
-        : <Dashboard user={currentUser} setActiveTab={setActiveTab} medications={medications} toggleMedication={toggleMedication} />;
+        : <Dashboard user={currentUser} setActiveTab={setActiveTab} />;
     }
   };
 

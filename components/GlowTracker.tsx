@@ -2,13 +2,13 @@
 import React from 'react';
 import { Medication } from '../types';
 
-interface GlowTrackerProps {
+interface SkinCheckProps {
   medications: Medication[];
   toggleMedication: (id: string) => void;
   setActiveTab: (tab: string) => void;
 }
 
-const GlowTracker: React.FC<GlowTrackerProps> = ({ medications, toggleMedication, setActiveTab }) => {
+const SkinCheck: React.FC<SkinCheckProps> = ({ medications, toggleMedication, setActiveTab }) => {
   const glowMeds = medications.filter(m => m.category === 'Skincare' || m.category === 'Ritual');
   const takenCount = glowMeds.filter(m => m.taken).length;
   const progressPercent = glowMeds.length > 0 ? (takenCount / glowMeds.length) * 100 : 0;
@@ -17,14 +17,14 @@ const GlowTracker: React.FC<GlowTrackerProps> = ({ medications, toggleMedication
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h2 className="text-4xl font-black text-pink-600 tracking-tight">Glow Studio</h2>
+          <h2 className="text-4xl font-black text-pink-600 tracking-tight">Skin Check</h2>
           <p className="text-slate-500 font-medium mt-1">Holistic wellness and natural skin rituals.</p>
         </div>
         <button 
           onClick={() => setActiveTab('image-check')}
           className="bg-pink-500 text-white px-8 py-4 rounded-2xl font-black hover:bg-pink-600 transition-all shadow-xl shadow-pink-100 flex items-center justify-center gap-2"
         >
-          <span>📸</span> Capture Your Glow
+          <span>📸</span> Capture Skin Concern
         </button>
       </header>
 
@@ -33,9 +33,9 @@ const GlowTracker: React.FC<GlowTrackerProps> = ({ medications, toggleMedication
           <div className="bg-gradient-to-br from-pink-50 to-indigo-50 p-10 rounded-[48px] border-2 border-white shadow-xl relative overflow-hidden">
              <div className="relative z-10 flex items-center justify-between">
                 <div className="max-w-[180px]">
-                   <p className="text-xs font-black text-pink-500 uppercase tracking-widest mb-2">Radiance Level</p>
+                   <p className="text-xs font-black text-pink-500 uppercase tracking-widest mb-2">Health Level</p>
                    <h3 className="text-5xl font-black text-slate-800">{Math.round(progressPercent)}%</h3>
-                   <p className="text-[10px] text-slate-400 font-bold uppercase mt-2 leading-relaxed">Completed your rituals to unlock natural glow.</p>
+                   <p className="text-[10px] text-slate-400 font-bold uppercase mt-2 leading-relaxed">Complete your rituals to maintain skin vitality.</p>
                 </div>
                 <div className="w-32 h-32 rounded-full bg-white/50 backdrop-blur-md flex items-center justify-center text-5xl shadow-inner border border-white">
                   ✨
@@ -82,7 +82,7 @@ const GlowTracker: React.FC<GlowTrackerProps> = ({ medications, toggleMedication
                       : 'bg-slate-900 text-white shadow-lg shadow-slate-200 hover:scale-105 active:scale-95'
                     }`}
                   >
-                    {item.taken ? 'Radiance Unlocked ✨' : 'Perform Ritual'}
+                    {item.taken ? 'Ritual Complete ✨' : 'Perform Ritual'}
                   </button>
                 </div>
               ))
@@ -126,4 +126,4 @@ const GlowTracker: React.FC<GlowTrackerProps> = ({ medications, toggleMedication
   );
 };
 
-export default GlowTracker;
+export default SkinCheck;

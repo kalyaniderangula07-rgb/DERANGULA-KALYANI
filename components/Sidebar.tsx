@@ -14,7 +14,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, role = UserR
   const patientNav = [
     { id: 'dashboard', label: 'Home', icon: '🏠' },
     { id: 'medicine-tracker', label: 'Medicine Cabinet', icon: '💊' },
-    { id: 'glow-tracker', label: 'Glow Studio', icon: '✨' },
+    { id: 'glow-tracker', label: 'Skin Check', icon: '✨' },
     { id: 'triage', label: 'Symptom Triage', icon: '🔍' },
     { id: 'image-check', label: 'DIY Remedies', icon: '📸' },
     { id: 'doctors', label: 'Find Doctor', icon: '👨‍⚕️' },
@@ -41,36 +41,38 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, role = UserR
       {/* Desktop Sidebar */}
       <aside className="hidden md:flex flex-col w-64 bg-white border-r border-slate-200 sticky top-0 h-screen">
         <div className="p-6">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-400 via-pink-500 to-orange-400 flex items-center justify-center text-white font-black text-xs">VM</div>
-            <h1 className="text-2xl font-black text-slate-800 tracking-tighter">VitaMind</h1>
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl overflow-hidden shadow-sm flex-shrink-0">
+               <img src="logo.png" alt="VitaMind" className="w-full h-full object-cover scale-150" />
+            </div>
+            <div className="flex flex-col min-w-0">
+              <h1 className="text-xl font-black text-slate-800 tracking-tighter leading-none truncate">VitaMind</h1>
+              <p className="text-[7px] text-slate-400 uppercase tracking-widest font-black italic mt-1 truncate">Your Companion</p>
+            </div>
           </div>
-          <p className="text-[9px] text-pink-500 mt-1 uppercase tracking-widest font-black italic">
-            Because You Matter.
-          </p>
         </div>
         <nav className="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
           {navItems.map((item) => (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`w-full flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all ${
+              className={`w-full flex items-center px-4 py-3.5 text-sm font-bold rounded-2xl transition-all ${
                 activeTab === item.id
-                  ? 'bg-pink-50 text-pink-600 shadow-sm shadow-pink-100'
-                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                  ? 'bg-slate-900 text-white shadow-lg shadow-slate-200'
+                  : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
               }`}
             >
-              <span className="text-xl mr-3">{item.icon}</span>
+              <span className={`text-xl mr-3 ${activeTab === item.id ? 'opacity-100' : 'opacity-60'}`}>{item.icon}</span>
               {item.label}
             </button>
           ))}
         </nav>
         <div className="p-4 border-t border-slate-100">
-          <div className="bg-slate-900 text-white p-4 rounded-2xl">
-            <p className="text-xs font-medium opacity-70">Support Status</p>
-            <div className="flex items-center mt-1">
+          <div className="bg-slate-50 p-4 rounded-[24px] border border-slate-100">
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Session Status</p>
+            <div className="flex items-center">
               <span className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
-              <p className="text-sm font-bold">Secure & Active</p>
+              <p className="text-xs font-bold text-slate-700">Secure & Active</p>
             </div>
           </div>
         </div>
@@ -83,7 +85,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, role = UserR
             key={item.id}
             onClick={() => setActiveTab(item.id)}
             className={`flex flex-col items-center p-2 rounded-lg transition-colors ${
-              activeTab === item.id ? 'text-pink-600' : 'text-slate-400'
+              activeTab === item.id ? 'text-slate-900' : 'text-slate-400'
             }`}
           >
             <span className="text-xl">{item.icon}</span>
