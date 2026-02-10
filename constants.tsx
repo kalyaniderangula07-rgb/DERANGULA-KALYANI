@@ -1,4 +1,3 @@
-
 import { Doctor, Appointment, PatientRecord } from './types';
 
 export const MOCK_DOCTORS: Doctor[] = [
@@ -59,8 +58,7 @@ export const MOCK_APPOINTMENTS: Appointment[] = [
     date: 'Today',
     time: '10:30 AM',
     type: 'Online',
-    status: 'Upcoming',
-    notes: 'Follow-up on seasonal allergies'
+    status: 'Upcoming'
   },
   {
     id: 'a2',
@@ -72,19 +70,6 @@ export const MOCK_APPOINTMENTS: Appointment[] = [
     date: 'Today',
     time: '12:00 PM',
     type: 'In-person',
-    status: 'Upcoming',
-    notes: 'Routine check-up'
-  },
-  {
-    id: 'a3',
-    patientId: 'p3',
-    patientName: 'Rohan Verma',
-    patientAvatar: 'https://i.pravatar.cc/150?u=rohan',
-    doctorId: 'd1',
-    doctorName: 'Dr. Priya Sharma',
-    date: 'Tomorrow',
-    time: '09:00 AM',
-    type: 'Online',
     status: 'Upcoming'
   }
 ];
@@ -98,24 +83,6 @@ export const MOCK_PATIENTS: PatientRecord[] = [
     lastVisit: 'Oct 20, 2024',
     condition: 'Chronic Allergies',
     avatar: 'https://i.pravatar.cc/150?u=aarav'
-  },
-  {
-    id: 'p2',
-    name: 'Ishani Gupta',
-    age: 34,
-    gender: 'Female',
-    lastVisit: 'Nov 02, 2024',
-    condition: 'Hyperthyroidism',
-    avatar: 'https://i.pravatar.cc/150?u=ishani'
-  },
-  {
-    id: 'p3',
-    name: 'Rohan Verma',
-    age: 45,
-    gender: 'Male',
-    lastVisit: 'Sept 15, 2024',
-    condition: 'Post-Surgery Recovery',
-    avatar: 'https://i.pravatar.cc/150?u=rohan'
   }
 ];
 

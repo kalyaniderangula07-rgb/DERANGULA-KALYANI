@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { UserRole } from '../types';
 
@@ -16,7 +15,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, role = UserR
     { id: 'medicine-tracker', label: 'Medicine Cabinet', icon: '💊' },
     { id: 'glow-tracker', label: 'Skin Check', icon: '✨' },
     { id: 'triage', label: 'Symptom Triage', icon: '🔍' },
-    { id: 'image-check', label: 'DIY Remedies', icon: '📸' },
+    { id: 'image-check', label: 'Care & Remedies', icon: '🩹' },
     { id: 'doctors', label: 'Find Doctor', icon: '👨‍⚕️' },
     { id: 'tracker', label: 'Health Tracker', icon: '📈' },
     { id: 'stress', label: 'Stress Relief', icon: '🧘' },

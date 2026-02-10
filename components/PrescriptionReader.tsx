@@ -1,6 +1,5 @@
-
 import React, { useState, useRef } from 'react';
-import { analyzePrescription } from '../services/geminiService';
+import { analyzePrescription } from '../geminiService';
 import { Medication, PrescriptionAnalysis } from '../types';
 
 interface PrescriptionReaderProps {
@@ -50,7 +49,7 @@ const PrescriptionReader: React.FC<PrescriptionReaderProps> = ({ onConfirmed }) 
             {!image ? (
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full aspect-video border-2 border-dashed border-slate-200 rounded-3xl flex flex-col items-center justify-center hover:border-blue-400 hover:bg-blue-50 transition-all group"
+                className="w-full aspect-video border-2 border-dashed border-slate-200 rounded-3xl flex flex-col items-center justify-center hover:border-pink-400 hover:bg-pink-50 transition-all group"
               >
                 <span className="text-5xl mb-2 group-hover:scale-110 transition-transform">📄</span>
                 <span className="text-sm font-bold text-slate-600">Upload Prescription Photo</span>
@@ -63,7 +62,7 @@ const PrescriptionReader: React.FC<PrescriptionReaderProps> = ({ onConfirmed }) 
                   onClick={() => setImage(null)}
                   className="absolute top-4 right-4 bg-white/80 backdrop-blur-md p-2 rounded-full shadow-lg hover:bg-white"
                 >
-                  ❌
+                  ✕
                 </button>
               </div>
             )}
@@ -79,7 +78,7 @@ const PrescriptionReader: React.FC<PrescriptionReaderProps> = ({ onConfirmed }) 
             <button
               onClick={handleScan}
               disabled={!image || loading}
-              className="w-full bg-blue-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-blue-700 transition-all shadow-lg shadow-blue-100 flex items-center justify-center disabled:opacity-50"
+              className="w-full bg-pink-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-pink-700 transition-all shadow-lg shadow-pink-100 flex items-center justify-center disabled:opacity-50"
             >
               {loading ? (
                 <>
@@ -94,15 +93,15 @@ const PrescriptionReader: React.FC<PrescriptionReaderProps> = ({ onConfirmed }) 
         <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-xl animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-slate-800">Scan Results</h2>
-            <span className="px-3 py-1 bg-blue-50 text-blue-600 text-xs font-bold rounded-full uppercase tracking-wider">
+            <span className="px-3 py-1 bg-pink-50 text-pink-600 text-xs font-bold rounded-full uppercase tracking-wider">
                 {analysis.medications.length} Medications Detected
             </span>
           </div>
 
-          <div className="bg-blue-50 p-4 rounded-2xl border border-blue-100 mb-6 flex items-start space-x-3">
+          <div className="bg-pink-50 p-4 rounded-2xl border border-pink-100 mb-6 flex items-start space-x-3">
               <span className="text-xl">⚠️</span>
-              <p className="text-[10px] text-blue-700 leading-relaxed font-bold uppercase tracking-tight">
-                  Verify the AI extraction against your physical prescription before setting reminders. Our AI is an assistant, not a medical professional.
+              <p className="text-[10px] text-pink-700 leading-relaxed font-bold uppercase tracking-tight">
+                  Verify the AI extraction against your physical prescription before setting reminders.
               </p>
           </div>
 
@@ -114,7 +113,7 @@ const PrescriptionReader: React.FC<PrescriptionReaderProps> = ({ onConfirmed }) 
                     <p className="text-xs text-slate-500">{med.dosage} • {med.schedule}</p>
                 </div>
                 <div className="text-right">
-                    <p className="text-sm font-bold text-blue-600">{med.time}</p>
+                    <p className="text-sm font-bold text-pink-600">{med.time}</p>
                     <p className="text-[9px] font-bold text-slate-400 uppercase">TIME</p>
                 </div>
               </div>
@@ -124,7 +123,7 @@ const PrescriptionReader: React.FC<PrescriptionReaderProps> = ({ onConfirmed }) 
           <div className="flex flex-col sm:flex-row gap-3">
             <button 
               onClick={() => onConfirmed(analysis.medications)}
-              className="flex-1 bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100"
+              className="flex-1 bg-pink-600 text-white py-4 rounded-xl font-bold hover:bg-pink-700 transition-all shadow-lg shadow-pink-100"
             >
               Set All Reminders
             </button>

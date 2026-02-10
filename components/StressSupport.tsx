@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect, useRef } from 'react';
-import { createFriendlyChat } from '../services/geminiService';
+import { createFriendlyChat } from '../geminiService';
 import { Chat } from '@google/genai';
 
 interface Message {
@@ -9,12 +8,10 @@ interface Message {
 }
 
 const StressSupport: React.FC = () => {
-  // Breathing Exercise State
   const [exerciseActive, setExerciseActive] = useState(false);
   const [timer, setTimer] = useState(0);
   const [phase, setPhase] = useState<'Inhale' | 'Hold' | 'Exhale'>('Inhale');
 
-  // Chat State
   const [chatActive, setChatActive] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { text: "Hi! I am your Friendly Listener. 💖 I am here for you. How do you feel right now?", sender: 'bot' }
@@ -94,7 +91,7 @@ const StressSupport: React.FC = () => {
   const MoodOption: React.FC<{ label: string; icon: string; prompt: string }> = ({ label, icon, prompt }) => (
     <button 
       onClick={() => { startChat(); handleSendMessage(prompt); }}
-      className="flex flex-col items-center justify-center p-4 bg-white border border-slate-100 rounded-3xl hover:border-blue-300 hover:shadow-lg transition-all active:scale-95 group"
+      className="flex flex-col items-center justify-center p-4 bg-white border border-slate-100 rounded-3xl hover:border-pink-300 hover:shadow-lg transition-all active:scale-95 group"
     >
       <span className="text-3xl mb-2 group-hover:scale-110 transition-transform">{icon}</span>
       <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">{label}</span>
@@ -103,16 +100,15 @@ const StressSupport: React.FC = () => {
 
   return (
     <div className="space-y-8 pb-10">
-      {/* Mindful Breathing Section */}
-      <section className="bg-gradient-to-br from-purple-500 to-indigo-600 rounded-[40px] p-8 md:p-12 text-white text-center shadow-xl relative overflow-hidden">
+      <section className="bg-gradient-to-br from-pink-500 to-rose-600 rounded-[40px] p-8 md:p-12 text-white text-center shadow-xl relative overflow-hidden">
         <div className="absolute top-0 right-0 p-10 opacity-10 text-9xl">🌬️</div>
         {!exerciseActive ? (
           <div className="relative z-10">
             <h2 className="text-4xl font-black mb-4">Take a Breath</h2>
-            <p className="text-purple-100 mb-10 max-w-md mx-auto text-lg font-medium">Just 2 minutes of calm can change your whole day.</p>
+            <p className="text-pink-100 mb-10 max-w-md mx-auto text-lg font-medium">Just 2 minutes of calm can change your whole day.</p>
             <button 
               onClick={startExercise}
-              className="bg-white text-purple-600 px-12 py-5 rounded-3xl font-black text-xl hover:scale-105 active:scale-95 transition-all shadow-2xl shadow-purple-900/20"
+              className="bg-white text-pink-600 px-12 py-5 rounded-3xl font-black text-xl hover:scale-105 active:scale-95 transition-all shadow-2xl shadow-rose-900/20"
             >
               Start Breathing
             </button>
@@ -134,7 +130,6 @@ const StressSupport: React.FC = () => {
       </section>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-        {/* Friendly Listener Chatbot */}
         <div className="bg-white rounded-[40px] border border-slate-200 shadow-sm overflow-hidden flex flex-col h-[650px] relative">
              <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-white/90 backdrop-blur-md sticky top-0 z-10">
                 <div className="flex items-center space-x-4">
@@ -149,7 +144,7 @@ const StressSupport: React.FC = () => {
                 </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-slate-50/20">
+            <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-slate-50/20 scrollbar-hide">
                 {!chatActive ? (
                   <div className="h-full flex flex-col items-center justify-center text-center space-y-8">
                     <div className="max-w-xs">
@@ -166,7 +161,7 @@ const StressSupport: React.FC = () => {
 
                     <button 
                       onClick={startChat}
-                      className="bg-slate-900 text-white px-10 py-5 rounded-[28px] font-black text-sm hover:bg-blue-600 transition-all active:scale-95 shadow-xl shadow-slate-200 uppercase tracking-widest"
+                      className="bg-slate-900 text-white px-10 py-5 rounded-[28px] font-black text-sm hover:bg-pink-600 transition-all active:scale-95 shadow-xl shadow-slate-200 uppercase tracking-widest"
                     >
                       Just Talk to Me
                     </button>
@@ -177,7 +172,7 @@ const StressSupport: React.FC = () => {
                       <div key={idx} className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'} animate-in fade-in slide-in-from-bottom-2 duration-300`}>
                         <div className={`max-w-[85%] px-6 py-4 rounded-[32px] text-base font-medium leading-relaxed shadow-sm ${
                           msg.sender === 'user' 
-                          ? 'bg-blue-600 text-white rounded-tr-none' 
+                          ? 'bg-pink-600 text-white rounded-tr-none' 
                           : 'bg-white text-slate-700 border border-slate-100 rounded-tl-none'
                         }`}>
                           {msg.text}
@@ -204,7 +199,7 @@ const StressSupport: React.FC = () => {
               <div className="p-6 bg-white border-t border-slate-100">
                 <form 
                   onSubmit={(e) => { e.preventDefault(); handleSendMessage(); }}
-                  className="flex items-center space-x-3 bg-slate-100 rounded-[32px] p-2 pr-4 border border-transparent focus-within:bg-white focus-within:border-blue-200 focus-within:shadow-lg transition-all"
+                  className="flex items-center space-x-3 bg-slate-100 rounded-[32px] p-2 pr-4 border border-transparent focus-within:bg-white focus-within:border-pink-200 focus-within:shadow-lg transition-all"
                 >
                   <input 
                     type="text"
@@ -216,7 +211,7 @@ const StressSupport: React.FC = () => {
                   <button 
                     type="submit"
                     disabled={!inputText.trim() || isTyping}
-                    className="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center hover:bg-blue-700 disabled:opacity-30 transition-all active:scale-95 shadow-md"
+                    className="bg-pink-600 text-white w-12 h-12 rounded-full flex items-center justify-center hover:bg-pink-700 disabled:opacity-30 transition-all active:scale-95 shadow-md"
                   >
                     <span className="text-xl rotate-45 -mt-0.5 -ml-0.5">🚀</span>
                   </button>
@@ -225,10 +220,9 @@ const StressSupport: React.FC = () => {
             )}
         </div>
 
-        {/* Calm Soundscapes */}
         <div className="bg-white p-8 rounded-[40px] border border-slate-200 shadow-sm flex flex-col">
              <div className="flex items-center space-x-4 mb-8">
-                <div className="text-3xl p-3 bg-blue-50 rounded-2xl">🎧</div>
+                <div className="text-3xl p-3 bg-pink-50 rounded-2xl">🎧</div>
                 <div>
                     <h3 className="font-black text-slate-800">Calm Sounds</h3>
                     <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest">Natural Echoes</p>
@@ -246,18 +240,11 @@ const StressSupport: React.FC = () => {
                           <span className="text-2xl group-hover:scale-125 transition-transform">{sound.icon}</span>
                           <span className="text-sm font-black text-slate-700">{sound.name}</span>
                         </div>
-                        <div className="w-10 h-10 rounded-full border-2 border-slate-100 flex items-center justify-center group-hover:bg-blue-50 group-hover:border-blue-100 transition-all">
-                          <span className="text-slate-300 group-hover:text-blue-500 text-xs transition-colors">▶</span>
+                        <div className="w-10 h-10 rounded-full border-2 border-slate-100 flex items-center justify-center group-hover:bg-pink-50 group-hover:border-pink-100 transition-all">
+                          <span className="text-slate-300 group-hover:text-pink-500 text-xs transition-colors">▶</span>
                         </div>
                     </button>
                 ))}
-            </div>
-            <div className="mt-8 p-8 bg-indigo-50 rounded-[40px] border border-indigo-100 flex-1 flex flex-col justify-center">
-                <div className="flex items-center space-x-2 mb-4">
-                  <div className="w-8 h-1 bg-indigo-200 rounded-full"></div>
-                  <p className="text-xs font-black text-indigo-400 uppercase tracking-widest">Your Calm Tip</p>
-                </div>
-                <p className="text-lg text-indigo-900 font-medium italic leading-relaxed">"Close your eyes. Put your hands on your heart. You are safe here."</p>
             </div>
         </div>
       </div>

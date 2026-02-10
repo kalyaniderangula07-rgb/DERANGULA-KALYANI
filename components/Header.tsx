@@ -7,9 +7,19 @@ interface HeaderProps {
   userRole: UserRole;
   setUserRole: (role: UserRole) => void;
   activeTab: string;
+  // Added missing props to fix 'IntrinsicAttributes & HeaderProps' assignment error in App.tsx
+  onOpenNotifications: () => void;
+  unreadCount: number;
 }
 
-const Header: React.FC<HeaderProps> = ({ currentUser, userRole, setUserRole, activeTab }) => {
+const Header: React.FC<HeaderProps> = ({ 
+  currentUser, 
+  userRole, 
+  setUserRole, 
+  activeTab,
+  onOpenNotifications,
+  unreadCount
+}) => {
   return (
     <header className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-40 px-4 md:px-8 py-4 flex items-center justify-between">
       <div className="flex items-center space-x-2">
@@ -24,6 +34,20 @@ const Header: React.FC<HeaderProps> = ({ currentUser, userRole, setUserRole, act
       </div>
 
       <div className="flex items-center space-x-4">
+        {/* Added Notification Button to handle onOpenNotifications and unreadCount props */}
+        <button 
+          onClick={onOpenNotifications}
+          className="relative w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center hover:bg-slate-200 transition-all group"
+          aria-label="View notifications"
+        >
+          <span className="text-xl group-hover:scale-110 transition-transform">🔔</span>
+          {unreadCount > 0 && (
+            <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm animate-in zoom-in">
+              {unreadCount}
+            </span>
+          )}
+        </button>
+
         <select 
           value={userRole}
           onChange={(e) => setUserRole(e.target.value as UserRole)}

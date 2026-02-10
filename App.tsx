@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { UserRole, Medication, User } from './types';
+import { UserRole, Medication, User, Notification, NotificationType } from './types';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import Dashboard from './components/Dashboard';
@@ -15,6 +14,7 @@ import Profile from './components/Profile';
 import Auth from './components/Auth';
 import MedicineTracker from './components/MedicineTracker';
 import SkinCheck from './components/GlowTracker';
+import NotificationCenter from './components/NotificationCenter';
 
 const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(() => {
@@ -25,6 +25,33 @@ const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [userRole, setUserRole] = useState<UserRole>(currentUser?.role || UserRole.PATIENT);
   const [medications, setMedications] = useState<Medication[]>([]);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [notifications, setNotifications] = useState<Notification[]>([
+    {
+      id: '1',
+      title: 'Water Reminder',
+      message: "Time for a quick refresh! You're 2 glasses away from your goal.",
+      timestamp: '2 mins ago',
+      type: NotificationType.INFO,
+      read: false
+    },
+    {
+      id: '2',
+      title: 'Ritual Complete',
+      message: 'You performed your Rosemary Rinse. Your skin vitality increased by 5%.',
+      timestamp: '1 hour ago',
+      type: NotificationType.SUCCESS,
+      read: false
+    },
+    {
+      id: '3',
+      title: 'Consultation Soon',
+      message: 'Your call with Dr. Priya Sharma starts in 15 minutes.',
+      timestamp: '3 hours ago',
+      type: NotificationType.ALERT,
+      read: true
+    }
+  ]);
 
   useEffect(() => {
     if (currentUser) {
@@ -72,6 +99,12 @@ const App: React.FC = () => {
     setMedications(prev => prev.map(m => m.id === id ? { ...m, taken: !m.taken } : m));
   };
 
+  const markNotificationRead = (id: string) => {
+    setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
+  };
+
+  const unreadCount = notifications.filter(n => !n.read).length;
+
   if (!currentUser) {
     return <Auth onLogin={handleLogin} />;
   }
@@ -102,7 +135,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-slate-50">
+    <div className="flex min-h-screen bg-white">
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} role={userRole} />
       <div className="flex-1 flex flex-col min-w-0">
         <Header 
@@ -110,13 +143,22 @@ const App: React.FC = () => {
           userRole={userRole} 
           setUserRole={setUserRole} 
           activeTab={activeTab}
+          onOpenNotifications={() => setIsNotificationOpen(true)}
+          unreadCount={unreadCount}
         />
-        <main className="flex-1 overflow-y-auto p-4 md:p-8">
+        <main className="flex-1 overflow-y-auto p-4 md:p-8 selection:bg-pink-100 selection:text-pink-600 scrollbar-hide">
           <div className="max-w-6xl mx-auto pb-20 md:pb-0">
             {renderContent()}
           </div>
         </main>
       </div>
+
+      <NotificationCenter 
+        isOpen={isNotificationOpen} 
+        onClose={() => setIsNotificationOpen(false)}
+        notifications={notifications}
+        onMarkAsRead={markNotificationRead}
+      />
     </div>
   );
 };

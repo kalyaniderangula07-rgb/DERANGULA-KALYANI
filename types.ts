@@ -1,4 +1,3 @@
-
 export enum UserRole {
   PATIENT = 'PATIENT',
   DOCTOR = 'DOCTOR',
@@ -9,6 +8,22 @@ export enum Severity {
   MILD = 'Mild',
   MODERATE = 'Moderate',
   SEVERE = 'Severe'
+}
+
+export enum NotificationType {
+  INFO = 'INFO',
+  SUCCESS = 'SUCCESS',
+  ALERT = 'ALERT',
+  MEDICINE = 'MEDICINE'
+}
+
+export interface Notification {
+  id: string;
+  title: string;
+  message: string;
+  timestamp: string;
+  type: NotificationType;
+  read: boolean;
 }
 
 export interface User {
@@ -48,7 +63,7 @@ export interface RemedyItem {
   description: string;
   instructions: string;
   imagePrompt: string;
-  timeOfDay: string; // e.g., "Morning", "Night"
+  timeOfDay: string;
 }
 
 export interface TriageResult {
@@ -64,7 +79,7 @@ export interface Medication {
   name: string;
   dosage: string;
   schedule: string;
-  time: string; // e.g., "08:00 AM"
+  time: string;
   taken: boolean;
   category: 'Medicine' | 'Skincare' | 'Ritual';
   durationDays?: number;
